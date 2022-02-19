@@ -79,17 +79,26 @@ WSGI_APPLICATION = 'catcollector.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'catcollector',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+if os.environ['DJANGO_ENV'] == 'production':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'catcollector',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'catcollector',
+            'USER': os.environ['USER'],
+            'PASSWORD':  os.environ['PASSWORD'],
+            'HOST':  os.environ['HOST'],
+            'PORT':  os.environ['PORT'],
+        }
+    }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
